@@ -51,13 +51,18 @@ export class AppService {
     this.postsWithUser$,
     this.comments$
   ).pipe(
+    shareReplay(),
     map(([posts, comments]) => {
       return posts.map((p) => ({
         ...p,
         comments: comments.filter((c) => c.postId === p.id)
       } as unknown as Post))
-    }),
-    tap(data => console.log('data :>> ', data))
+    })
   )
+  selectedPost$ = combineLatest(this.postSelected$, this.postsWithUserAndComments$).pipe(
+    map(([postId, posts]) => {
+      return posts.find((p) => p.id === postId) as Post;
+    })
+  );
     
 }

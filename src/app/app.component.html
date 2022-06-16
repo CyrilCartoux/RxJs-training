@@ -12,12 +12,17 @@
 
       <div *ngIf="selectedPost$ | async as selectedPost">
         <div *ngIf="i+1 == selectedPost.id">
-          <h3>{{ selectedPost.userId }}</h3>
+          <h1>Détail du post</h1>
           <h4>{{ selectedPost.title }}</h4>
+          <h5>author {{ selectedPost.userId }}</h5>
           <p>{{ selectedPost.body }}</p>
+          <mat-divider></mat-divider>
           <h4>Commentaires</h4>
           <div *ngFor="let comment of post.comments">
-            {{comment.email}}
+            <h6>
+              {{comment.email}}
+            </h6>
+            <p>{{comment.body}}</p>
           </div>
         </div>
       </div>

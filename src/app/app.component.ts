@@ -13,12 +13,8 @@ export class AppComponent {
   posts$ = this.appService.postsWithUser$;
   postSelectedAction = this.appService.postSelected$;
   postsWithUserAndComments$ = this.appService.postsWithUserAndComments$;
-
-  selectedPost$ = combineLatest(this.postSelectedAction, this.postsWithUserAndComments$).pipe(
-    map(([postId, posts]) => {
-      return posts.find((p) => p.id === postId) as Post;
-    })
-  );
+  selectedPost$ = this.appService.selectedPost$;
+  
 
   constructor(private appService: AppService) {}
   onSelected(postId: number): void {
