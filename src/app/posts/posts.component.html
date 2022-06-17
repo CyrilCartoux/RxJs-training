@@ -1,0 +1,39 @@
+<div class="post-container" *ngIf="postsWithUserAndComments$ | async as posts">
+  <div class="post-item" *ngFor="let post of posts; let i = index">
+    <mat-card class="example-card">
+      <mat-card-title-group>
+        <mat-card-title>{{post.title}}</mat-card-title>
+        <mat-card-subtitle>
+            <a [routerLink]="['/todos']">
+                {{post.userId}}
+            </a>
+        </mat-card-subtitle>
+        <img mat-card-sm-image src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+      </mat-card-title-group>
+      <mat-card-actions>
+        <button mat-button (click)="onSelected(post.id)">Voir le post</button>
+      </mat-card-actions>
+
+      <div class="info-post" *ngIf="selectedPost$ | async as selectedPost">
+        <div *ngIf="i+1 == selectedPost.id">
+          <h1>Détail du post</h1>
+          <h4>{{ selectedPost.title }}</h4>
+          <h5>author {{ selectedPost.userId }}</h5>
+          <p>{{ selectedPost.body }}</p>
+
+          <mat-divider></mat-divider>
+
+          <h4>Commentaires</h4>
+          <div *ngFor="let comment of post.comments">
+            <h6>
+              {{comment.email}}
+            </h6>
+            <p>{{comment.body}}</p>
+          </div>
+        </div>
+      </div>
+
+
+    </mat-card>
+  </div>
+</div>

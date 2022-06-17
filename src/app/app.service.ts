@@ -1,3 +1,4 @@
+import { Todo } from './models/todo';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, mapTo, shareReplay, tap } from 'rxjs/operators';
@@ -11,6 +12,7 @@ export class AppService {
   private postApi: string = 'https://jsonplaceholder.typicode.com/posts';
   private userApi: string = 'https://jsonplaceholder.typicode.com/users';
   private commentsApi: string = 'https://jsonplaceholder.typicode.com/comments';
+  private todosApi: string = "https://jsonplaceholder.typicode.com/todos";
 
   private postSelected: Subject<number> = new Subject<number>();
   public postSelected$ = this.postSelected.asObservable();
@@ -36,6 +38,10 @@ export class AppService {
       shareReplay()
     )
 
+  todos$ = this.http.get<Todo[]>(this.todosApi).pipe( 
+    shareReplay()
+  )
+
   postsWithUser$ = combineLatest(this.posts$, this.users$).pipe(
     map(([posts, users]) => {
       return posts.map(
@@ -59,10 +65,19 @@ export class AppService {
       } as unknown as Post))
     })
   )
+
+  usersWithTodos$ = combineLatest(this.users$, this.todos$).pipe(
+    map(([users, todos]) => {
+      return users.map((u) => ({
+        ...u,
+        todos: todos.filter((t) => t.userId === u.id)
+      }) as unknown as User)
+    })
+  )
   selectedPost$ = combineLatest(this.postSelected$, this.postsWithUserAndComments$).pipe(
     map(([postId, posts]) => {
       return posts.find((p) => p.id === postId) as Post;
     })
   );
-    
+
 }

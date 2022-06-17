@@ -1,8 +1,4 @@
 import { Component} from '@angular/core';
-import { combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { AppService } from './app.service';
-import { Post } from './models/post';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +6,5 @@ import { Post } from './models/post';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  posts$ = this.appService.postsWithUser$;
-  postSelectedAction = this.appService.postSelected$;
-  postsWithUserAndComments$ = this.appService.postsWithUserAndComments$;
-  selectedPost$ = this.appService.selectedPost$;
   
-
-  constructor(private appService: AppService) {}
-  onSelected(postId: number): void {
-    this.appService.setPostSelected(postId);
-  }
 }

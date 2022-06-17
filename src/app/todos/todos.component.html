@@ -1,0 +1,10 @@
+<div *ngIf="users$ |async as users">
+    <div *ngFor="let user of users">
+        <h4>{{user.name}}</h4>
+        <ul>
+            <li *ngFor="let todo of user.todos">
+                <span [ngClass]="todo.completed?'green':'red'" >{{todo.title}} - {{todo.completed}}</span>
+            </li>
+        </ul>
+    </div>
+</div>     
