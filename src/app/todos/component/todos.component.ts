@@ -1,8 +1,8 @@
-import { Todo } from '../models/todo';
-import { AppService } from '../app.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { User } from '../models/user';
+import { AppService } from 'src/app/app.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-todos',
