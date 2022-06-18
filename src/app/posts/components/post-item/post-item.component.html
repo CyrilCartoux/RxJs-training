@@ -1,1 +1,39 @@
-<p>post-item works!</p>
+<div class="post-container" *ngIf="post">
+  <div class="post-item">
+    <mat-card class="example-card">
+      <mat-card-title-group>
+        <mat-card-title>{{post.title}}</mat-card-title>
+        <mat-card-subtitle>
+          <a [routerLink]="['/todos']">
+            {{post.userId}}
+          </a>
+        </mat-card-subtitle>
+
+      </mat-card-title-group>
+      <mat-card-actions>
+        <button mat-button (click)="onSelected(post.id)">{{showDetail ? "Fermer le post":"Voir le post"}}</button>
+      </mat-card-actions>
+
+      <div *ngIf="selectedPost$ | async as selectedPost">
+        <div class="info-post" *ngIf="post.id == selectedPost.id">
+          <h1>Détail du post</h1>
+          <h4>{{ selectedPost.title }}</h4>
+          <h5>author {{ selectedPost.userId }}</h5>
+          <p>{{ selectedPost.body }}</p>
+
+          <mat-divider></mat-divider>
+
+          <h4>Commentaires</h4>
+          <div *ngFor="let comment of post.comments">
+            <h6>
+              {{comment.email}}
+            </h6>
+            <p>{{comment.body}}</p>
+          </div>
+        </div>
+      </div>
+
+
+    </mat-card>
+  </div>
+</div>

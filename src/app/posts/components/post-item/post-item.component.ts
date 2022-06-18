@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AppService } from './../../../app.service';
+import { Observable } from 'rxjs';
+import { Post } from './../../../models/post';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-post-item',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostItemComponent implements OnInit {
 
-  constructor() { }
+  showDetail: boolean = false;
+
+  @Input() post: Post;
+
+  @Output() selected: EventEmitter<number> = new EventEmitter<number>();
+  selectedPost$: Observable<Post> = this.appService.selectedPost$;
+
+  constructor(private appService: AppService) { }
 
   ngOnInit(): void {
+
+  }
+  onSelected(postId: number): void {
+    this.showDetail = !this.showDetail;
+    this.selected.emit(this.showDetail ? postId : null);
   }
 
 }
