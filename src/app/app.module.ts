@@ -8,23 +8,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatCardModule} from '@angular/material/card';
 import {MatDividerModule} from '@angular/material/divider';
 import { TodosComponent } from './todos/todos.component';
-import { PostsComponent } from './posts/posts.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    TodosComponent,
-    PostsComponent
+    TodosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
-    // Material
-    MatCardModule,
-    MatDividerModule
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

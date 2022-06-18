@@ -1,11 +1,9 @@
 import { TodosComponent } from './todos/todos.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostsComponent } from './posts/posts.component';
 
 const routes: Routes = [
-  {path: "", component: PostsComponent},
-  {path: "posts", component: PostsComponent},
+  {path: "", loadChildren: () => import("./posts/posts.module").then(m => m.PostsModule)},
   {path: "todos", component: TodosComponent}
 ];
 

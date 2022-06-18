@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { AppService } from '../app.service';
+import { AppService } from '../../../app.service';
 
 @Component({
   selector: 'app-posts',
-  templateUrl: './posts.component.html',
-  styleUrls: ['./posts.component.less']
+  templateUrl: './post-list.component.html',
+  styleUrls: ['./post-list.component.less']
 })
-export class PostsComponent {
+export class PostListComponent {
 
   posts$ = this.appService.postsWithUser$;
   postSelectedAction = this.appService.postSelected$;
