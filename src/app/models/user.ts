@@ -1,3 +1,4 @@
+import { Post } from './post';
 import { Todo } from './todo';
 export interface User {
     id: number;
@@ -21,5 +22,6 @@ export interface User {
       catchPhrase: string;
       bs: string;
     };
+    posts: Post[];
     todos: Todo[]
 }

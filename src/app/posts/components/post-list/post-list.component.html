@@ -1,3 +1,16 @@
-<ng-container *ngFor="let post of postsWithUserAndComments$ |async as posts; let i = index">
+<!-- <ng-container *ngFor="let post of postsWithUserAndComments$ |async as posts; let i = index">
   <app-post-item [post]="post" (selected)="onPostSelected($event)"></app-post-item>
-</ng-container>
+</ng-container> -->
+<div *ngFor="let user of usersWithPosts$ |async">
+  <div class="user-header">{{ user.name }}</div>
+  <h4>{{user.email}} - {{user.phone}}</h4>
+  <div class="posts">
+
+    <ng-container *ngFor="let post of user.posts" >
+      
+        <h3>{{post.title}}</h3>
+        <p>{{post.body}}</p>
+    </ng-container>
+  </div>
+  <div>
+</div>

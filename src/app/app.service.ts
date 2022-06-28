@@ -12,7 +12,7 @@ export class AppService {
   private postApi: string = 'https://jsonplaceholder.typicode.com/posts';
   private userApi: string = 'https://jsonplaceholder.typicode.com/users';
   private commentsApi: string = 'https://jsonplaceholder.typicode.com/comments';
-  private todosApi: string = "https://jsonplaceholder.typicode.com/todos";
+  private todosApi: string = 'https://jsonplaceholder.typicode.com/todos';
 
   private postSelected: Subject<number> = new Subject<number>();
   public postSelected$ = this.postSelected.asObservable();
@@ -20,64 +20,59 @@ export class AppService {
     this.postSelected.next(id);
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  posts$ = this.http.get<Post[]>(this.postApi).pipe(
-    tap((data) => (data.length = 15)),
-    shareReplay()
-  );
+  posts$ = this.http.get<Post[]>(this.postApi).pipe(shareReplay());
+  users$ = this.http.get<User[]>(this.userApi).pipe(shareReplay());
+  comments$ = this.http.get<Comment[]>(this.commentsApi).pipe(shareReplay());
+  todos$ = this.http.get<Todo[]>(this.todosApi).pipe(shareReplay());
 
-  users$ = this.http.get<User[]>(this.userApi).pipe(
-    tap((data) => (data.length = 10)),
-    shareReplay()
-  );
-
-  comments$ = this.http.get<Comment[]>(this.commentsApi)
-    .pipe(
-      tap(data => data.length = 35),
-      shareReplay()
-    )
-
-  todos$ = this.http.get<Todo[]>(this.todosApi).pipe( 
-    shareReplay()
-  )
-
-  postsWithUser$ = combineLatest(this.posts$, this.users$).pipe(
-    map(([posts, users]) => {
+  postsWithComments$ = combineLatest([
+    this.posts$,
+    this.comments$,
+  ]).pipe(
+    shareReplay(),
+    map(([posts, comments]) => {
       return posts.map(
         (p) =>
-        ({
-          ...p,
-          userId: users.find((u) => p.userId === u.id).name,
-        } as unknown as Post)
+          ({
+            ...p,
+            comments: comments.filter((c) => c.postId === p.id),
+          } as unknown as Post)
       );
     })
   );
-  postsWithUserAndComments$ = combineLatest(
-    this.postsWithUser$,
-    this.comments$
-  ).pipe(
-    shareReplay(),
-    map(([posts, comments]) => {
-      return posts.map((p) => ({
-        ...p,
-        comments: comments.filter((c) => c.postId === p.id)
-      } as unknown as Post))
-    })
-  )
 
-  usersWithTodos$ = combineLatest(this.users$, this.todos$).pipe(
+  usersWithTodos$ = combineLatest([this.users$, this.todos$]).pipe(
     map(([users, todos]) => {
-      return users.map((u) => ({
-        ...u,
-        todos: todos.filter((t) => t.userId === u.id)
-      }) as unknown as User)
+      return users.map(
+        (u) =>
+          ({
+            ...u,
+            todos: todos.filter((t) => t.userId === u.id),
+          } as unknown as User)
+      );
     })
-  )
-  selectedPost$ = combineLatest(this.postSelected$, this.postsWithUserAndComments$).pipe(
+  );
+  usersWithPosts$ = combineLatest([this.usersWithTodos$, this.postsWithComments$]).pipe(
+    map(([users, posts]) => {
+      return users.map((u) => {
+        const postsForUser = posts.filter((p) => p.userId === u.id);
+        return {
+          ...u,
+          posts: postsForUser,
+        } as unknown as User;
+      });
+    }),
+    tap((data) => console.log('data', data))
+  );
+
+  selectedPost$ = combineLatest([
+    this.postSelected$,
+    this.postsWithComments$,
+  ]).pipe(
     map(([postId, posts]) => {
       return posts.find((p) => p.id === postId) as Post;
     })
   );
-
 }

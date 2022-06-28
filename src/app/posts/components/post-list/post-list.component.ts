@@ -8,7 +8,7 @@ import { AppService } from '../../../app.service';
 })
 export class PostListComponent {
 
-  postsWithUserAndComments$ = this.appService.postsWithUserAndComments$;
+  usersWithPosts$ = this.appService.usersWithPosts$;
   selectedPost$ = this.appService.selectedPost$;
 
 
