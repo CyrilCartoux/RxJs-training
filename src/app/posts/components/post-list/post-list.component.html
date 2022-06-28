@@ -1,16 +1,27 @@
 <!-- <ng-container *ngFor="let post of postsWithUserAndComments$ |async as posts; let i = index">
   <app-post-item [post]="post" (selected)="onPostSelected($event)"></app-post-item>
 </ng-container> -->
-<div *ngFor="let user of usersWithPosts$ |async">
+<div *ngFor="let user of usersWithPostsAndComments$ |async">
   <div class="user-header">{{ user.name }}</div>
   <h4>{{user.email}} - {{user.phone}}</h4>
-  <div class="posts">
+  <div class="posts-list">
 
-    <ng-container *ngFor="let post of user.posts" >
-      
-        <h3>{{post.title}}</h3>
+    <ng-container *ngFor="let post of user.posts">
+      <div class="post-item">
+        <h5>{{post.title}}</h5>
         <p>{{post.body}}</p>
+        <button class="small btn btn-light see-comments" (click)="onShowComments(post)"> See comments</button>
+      </div>
+      <div class="post-comments" *ngIf="showComments && openPostId === post.id ">
+        <div *ngFor="let comment of post.comments">
+          <div class="comment-item">
+            <h5>{{comment.name}}</h5>
+            <p>{{comment.email}}</p>
+            <p>{{comment.body}}</p>
+          </div>
+        </div>
+      </div>
     </ng-container>
   </div>
   <div>
-</div>
+  </div>
