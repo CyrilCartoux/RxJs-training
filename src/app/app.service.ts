@@ -20,7 +20,7 @@ export class AppService {
     this.postSelected.next(id);
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   posts$ = this.http.get<Post[]>(this.postApi).pipe(shareReplay());
   users$ = this.http.get<User[]>(this.userApi).pipe(shareReplay());
@@ -35,10 +35,10 @@ export class AppService {
     map(([posts, comments]) => {
       return posts.map(
         (p) =>
-          ({
-            ...p,
-            comments: comments.filter((c) => c.postId === p.id),
-          } as unknown as Post)
+        ({
+          ...p,
+          comments: comments.filter((c) => c.postId === p.id),
+        } as unknown as Post)
       );
     })
   );
@@ -47,14 +47,14 @@ export class AppService {
     map(([users, todos]) => {
       return users.map(
         (u) =>
-          ({
-            ...u,
-            todos: todos.filter((t) => t.userId === u.id),
-          } as unknown as User)
+        ({
+          ...u,
+          todos: todos.filter((t) => t.userId === u.id),
+        } as unknown as User)
       );
     })
   );
-  usersWithPosts$ = combineLatest([this.usersWithTodos$, this.postsWithComments$]).pipe(
+  usersWithPostsAndComments$ = combineLatest([this.usersWithTodos$, this.postsWithComments$]).pipe(
     map(([users, posts]) => {
       return users.map((u) => {
         const postsForUser = posts.filter((p) => p.userId === u.id);

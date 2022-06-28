@@ -1,3 +1,4 @@
+import { Post } from './../../../models/post';
 import { Component } from '@angular/core';
 import { AppService } from '../../../app.service';
 
@@ -8,12 +9,17 @@ import { AppService } from '../../../app.service';
 })
 export class PostListComponent {
 
-  usersWithPosts$ = this.appService.usersWithPosts$;
+  usersWithPostsAndComments$ = this.appService.usersWithPostsAndComments$;
   selectedPost$ = this.appService.selectedPost$;
-
+  showComments: boolean = false;
+  openPostId: number;
 
   constructor(private appService: AppService) { }
   onPostSelected(postId: number): void {
     this.appService.setPostSelected(postId);
+  }
+  onShowComments(post: Post) {
+    this.showComments = !this.showComments;
+    this.openPostId = post.id;
   }
 }
